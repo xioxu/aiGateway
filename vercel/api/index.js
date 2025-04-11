@@ -1,5 +1,5 @@
 const express = require('express');
-const fetch = require('node-fetch');
+const request = require('request');
 
 const BACKEND_API_MAP = {
   "grok": "https://api.x.ai",
@@ -9,7 +9,7 @@ const BACKEND_API_MAP = {
 const app = express();
 app.use(express.json());
 
-app.all('/v1/:model/*', async (req, res) => {
+app.all('/v1/:model/*', (req, res) => {
   try {
     const model = req.params.model.toLowerCase();
     const extraPath = req.params[0] || '';
@@ -37,9 +37,10 @@ app.all('/v1/:model/*', async (req, res) => {
     }
 
     const requestOptions = {
+      url: backendUrl,
       method: req.method,
       headers: headers,
-      redirect: 'follow',
+      followRedirect: true,
       timeout: 60000
     };
 
@@ -48,22 +49,33 @@ app.all('/v1/:model/*', async (req, res) => {
       requestOptions.body = JSON.stringify(req.body);
     }
 
-    const response = await fetch(backendUrl, requestOptions);
-    
-    // 设置状态码和头
-    res.status(response.status);
-    for (const [key, value] of response.headers.entries()) {
-      res.setHeader(key, value);
-    }
+    // 创建请求并直接 pipe
+    const backendRequest = request(requestOptions);
 
-    // 流式传输响应
-    const reader = response.body.getReader();
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(value);
-    }
-    res.end();
+    // 处理响应
+    backendRequest
+      .on('response', (backendResponse) => {
+        // 设置状态码和头
+        res.status(backendResponse.statusCode);
+        Object.keys(backendResponse.headers).forEach(key => {
+          res.setHeader(key, backendResponse.headers[key]);
+        });
+      })
+      .on('error', (err) => {
+        console.error('Request error:', {
+          message: err.message,
+          code: err.code,
+          url: backendUrl
+        });
+        if (!res.headersSent) {
+          res.status(502).send({
+            error: 'Backend Connection Error',
+            message: err.message,
+            code: err.code
+          });
+        }
+      })
+      .pipe(res); // 直接 pipe 到响应
 
   } catch (error) {
     console.error('Proxy error:', {
