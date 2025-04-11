@@ -27,9 +27,13 @@ app.all('/v1/:model/*', (req, res) => {
       'accept': '*/*'
     };
     
-    // 只保留 authorization 头
+    // 只保留 authorization 和 x-api-key 头
     if (req.headers.authorization) {
       headers.authorization = req.headers.authorization;
+    }
+    
+    if (req.headers['x-api-key']) {
+      headers['x-api-key'] = req.headers['x-api-key'];
     }
 
     const requestOptions = {
