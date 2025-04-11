@@ -1,0 +1,17 @@
+{
+  "name": "ai-gateway-vercel",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel start",
+    "build": "vercel build"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+} 
