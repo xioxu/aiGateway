@@ -37,6 +37,10 @@ app.all('/v1/:model/*', (req, res) => {
       headers['x-api-key'] = req.headers['x-api-key'];
     }
 
+    if (req.headers['anthropic-version']) {
+      headers['anthropic-version'] = req.headers['anthropic-version'];
+    }
+    
     const requestOptions = {
       url: backendUrl,
       method: req.method,
