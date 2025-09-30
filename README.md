@@ -1,70 +1,89 @@
 # AI Gateway
 
-AI 服务网关，支持两种部署方式：
-- Node.js 版本：位于 `nodejs` 文件夹，用于部署到自己的服务器
-- Vercel 版本：位于项目根目录，用于直接部署到 Vercel 平台
+[中文文档](README_CN.md) | [English Documentation](README.md)
 
-## 功能特点
+A unified AI service gateway supporting multiple deployment options:
+- Node.js version: Located in the `nodejs` folder for self-hosted deployment
+- Vercel version: Located in the project root for direct deployment to Vercel platform
 
-- 统一的 AI 服务网关
-- 支持多种部署方式
-- 可扩展的架构设计
+## Features
 
-## 部署选项
+- Unified AI service gateway
+- Support for multiple deployment options
+- Extensible architecture design
+- Support for multiple AI providers (OpenAI, Claude, Grok, Gemini)
 
-### 1. Node.js 服务器部署（自部署版本）
+## Supported AI Providers
 
-#### 系统要求
-- Node.js (v14 或更高版本)
-- npm 或 yarn
+- **OpenAI**: `https://api.openai.com`
+- **Claude (Anthropic)**: `https://api.anthropic.com`
+- **Grok (xAI)**: `https://api.x.ai`
+- **Gemini (Google)**: `https://generativelanguage.googleapis.com`
 
-#### 安装步骤
-1. 克隆仓库：
+## Deployment Options
+
+### 1. Node.js Server Deployment (Self-hosted)
+
+#### System Requirements
+- Node.js (v14 or higher)
+- npm or yarn
+
+#### Installation Steps
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/aiGateway.git
 cd aiGateway/nodejs
 ```
 
-2. 安装依赖：
+2. Install dependencies:
 ```bash
 npm install
-# 或
+# or
 yarn install
 ```
 
-3. 启动服务：
+3. Start the service:
 ```bash
 npm start
-# 或
+# or
 yarn start
 ```
 
+The service will run on port 3008 by default.
 
-### 2. Vercel 部署
+### 2. Vercel Deployment
 
-#### 系统要求
-- Vercel 账号
-- GitHub 账号（用于自动部署）
+#### System Requirements
+- Vercel account
+- GitHub account (for automatic deployment)
 
-#### 部署步骤
-1. Fork 本项目到你的 GitHub 账号
-2. 在 Vercel 中导入项目
-3. 点击部署
+#### Deployment Steps
+1. Fork this project to your GitHub account
+2. Import the project in Vercel
+3. Click deploy
 
-### 3. API 访问地址
-部署后可以使用https://your-project-name.vercel.app/v1/{model}作为base地址.
+### 3. API Access URLs
 
-例如 https://your-project-name.vercel.app/v1/grok  对应  https://api.x.ai
+After deployment, you can use `https://your-project-name.vercel.app/v1/{model}` as the base URL.
 
-https://your-project-name.vercel.app/v1/claude  对应  https://api.anthropic.com
+For example:
+- `https://your-project-name.vercel.app/v1/grok` maps to `https://api.x.ai`
+- `https://your-project-name.vercel.app/v1/claude` maps to `https://api.anthropic.com`
+- `https://your-project-name.vercel.app/v1/gemini` maps to `https://generativelanguage.googleapis.com`
 
-URL示例：
+URL Examples:
 ```
 https://your-project-name.vercel.app/v1/grok/v1/models
 
 https://your-project-name.vercel.app/v1/claude/messages
+
+https://your-project-name.vercel.app/v1/gemini/v1beta/models
 ```
 
-## 许可证
+## Usage
+
+The gateway automatically forwards requests to the appropriate AI provider based on the model parameter in the URL. All necessary headers (authorization, x-api-key, etc.) are preserved and forwarded.
+
+## License
 
 MIT

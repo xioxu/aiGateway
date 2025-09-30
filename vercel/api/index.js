@@ -4,7 +4,8 @@ const request = require('request');
 const BACKEND_API_MAP = {
   "grok": "https://api.x.ai",
   "claude": "https://api.anthropic.com",
-  "openai": "https://api.openai.com"
+  "openai": "https://api.openai.com",
+  "gemini": "https://generativelanguage.googleapis.com"
 };
 
 const app = express();

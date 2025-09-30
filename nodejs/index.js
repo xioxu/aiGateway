@@ -4,7 +4,8 @@ const request = require('request');
 const BACKEND_API_MAP = {
   "grok": "https://api.x.ai",
   "claude": "https://api.anthropic.com",
-  "openai": "https://api.openai.com"
+  "openai": "https://api.openai.com",
+  "gemini": "https://generativelanguage.googleapis.com"
 };
 
 const app = express();
@@ -35,6 +36,10 @@ app.all('/v1/:model/*', (req, res) => {
     
     if (req.headers['x-api-key']) {
       headers['x-api-key'] = req.headers['x-api-key'];
+    }
+
+    if (req.headers['anthropic-version']) {
+      headers['anthropic-version'] = req.headers['anthropic-version'];
     }
 
     const requestOptions = {
