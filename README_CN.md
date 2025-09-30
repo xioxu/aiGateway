@@ -84,6 +84,81 @@ https://your-project-name.vercel.app/v1/gemini/v1beta/models
 
 网关会根据 URL 中的模型参数自动将请求转发到相应的 AI 提供商。所有必要的请求头（authorization、x-api-key 等）都会被保留并转发。
 
+### API 示例
+
+#### 1. OpenAI 兼容的聊天完成接口（Gemini）
+
+```bash
+curl "https://your-project-name.vercel.app/v1/gemini/v1beta/openai/chat/completions" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer $GEMINI_API_KEY" \
+-d '{
+    "model": "gemini-2.5-pro",
+    "messages": [
+        {"role": "user", "content": "请向我解释人工智能是如何工作的"}
+    ]
+}'
+```
+
+#### 2. 原生 Gemini 生成内容接口
+
+```bash
+curl "https://your-project-name.vercel.app/v1/gemini/v1beta/models/gemini-2.5-flash:generateContent" \
+-H "x-goog-api-key: $GEMINI_API_KEY" \
+-H "Content-Type: application/json" \
+-X POST \
+-d '{
+    "contents": [
+        {
+            "parts": [
+                {
+                    "text": "请用几句话解释人工智能的工作原理"
+                }
+            ]
+        }
+    ]
+}'
+```
+
+#### 3. Claude API 示例
+
+```bash
+curl "https://your-project-name.vercel.app/v1/claude/messages" \
+-H "Content-Type: application/json" \
+-H "x-api-key: $CLAUDE_API_KEY" \
+-H "anthropic-version: 2023-06-01" \
+-d '{
+    "model": "claude-3-sonnet-20240229",
+    "max_tokens": 1024,
+    "messages": [
+        {"role": "user", "content": "你好，Claude！"}
+    ]
+}'
+```
+
+#### 4. Grok API 示例
+
+```bash
+curl "https://your-project-name.vercel.app/v1/grok/v1/chat/completions" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer $GROK_API_KEY" \
+-d '{
+    "model": "grok-beta",
+    "messages": [
+        {"role": "user", "content": "生命的意义是什么？"}
+    ]
+}'
+```
+
+### 环境变量
+
+请确保设置以下环境变量：
+
+- `GEMINI_API_KEY`: 你的 Google Gemini API 密钥
+- `CLAUDE_API_KEY`: 你的 Anthropic Claude API 密钥  
+- `GROK_API_KEY`: 你的 xAI Grok API 密钥
+- `OPENAI_API_KEY`: 你的 OpenAI API 密钥
+
 ## 许可证
 
 MIT

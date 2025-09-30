@@ -84,6 +84,81 @@ https://your-project-name.vercel.app/v1/gemini/v1beta/models
 
 The gateway automatically forwards requests to the appropriate AI provider based on the model parameter in the URL. All necessary headers (authorization, x-api-key, etc.) are preserved and forwarded.
 
+### API Examples
+
+#### 1. OpenAI Compatible Chat Completions (Gemini)
+
+```bash
+curl "https://your-project-name.vercel.app/v1/gemini/v1beta/openai/chat/completions" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer $GEMINI_API_KEY" \
+-d '{
+    "model": "gemini-2.5-pro",
+    "messages": [
+        {"role": "user", "content": "Explain to me how AI works"}
+    ]
+}'
+```
+
+#### 2. Native Gemini Generate Content
+
+```bash
+curl "https://your-project-name.vercel.app/v1/gemini/v1beta/models/gemini-2.5-flash:generateContent" \
+-H "x-goog-api-key: $GEMINI_API_KEY" \
+-H "Content-Type: application/json" \
+-X POST \
+-d '{
+    "contents": [
+        {
+            "parts": [
+                {
+                    "text": "Explain how AI works in a few words"
+                }
+            ]
+        }
+    ]
+}'
+```
+
+#### 3. Claude API Example
+
+```bash
+curl "https://your-project-name.vercel.app/v1/claude/messages" \
+-H "Content-Type: application/json" \
+-H "x-api-key: $CLAUDE_API_KEY" \
+-H "anthropic-version: 2023-06-01" \
+-d '{
+    "model": "claude-3-sonnet-20240229",
+    "max_tokens": 1024,
+    "messages": [
+        {"role": "user", "content": "Hello, Claude!"}
+    ]
+}'
+```
+
+#### 4. Grok API Example
+
+```bash
+curl "https://your-project-name.vercel.app/v1/grok/v1/chat/completions" \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer $GROK_API_KEY" \
+-d '{
+    "model": "grok-beta",
+    "messages": [
+        {"role": "user", "content": "What is the meaning of life?"}
+    ]
+}'
+```
+
+### Environment Variables
+
+Make sure to set the following environment variables:
+
+- `GEMINI_API_KEY`: Your Google Gemini API key
+- `CLAUDE_API_KEY`: Your Anthropic Claude API key  
+- `GROK_API_KEY`: Your xAI Grok API key
+- `OPENAI_API_KEY`: Your OpenAI API key
+
 ## License
 
 MIT

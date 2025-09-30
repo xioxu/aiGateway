@@ -23,23 +23,30 @@ app.all('/v1/:model/*', (req, res) => {
 
     const backendUrl = `${baseBackendUrl}/${extraPath}`.replace(/\/+$/, '');
     
-    // 只保留关键头部
-    const headers = { 
-      'content-type': 'application/json',
-      'accept': '*/*'
-    };
+    // 需要保留的头部key数组
+    const allowedHeaders = [
+      'content-type',
+      'accept',
+      'authorization',
+      'x-api-key', 
+      'anthropic-version',
+      'x-goog-api-key'
+    ];
     
-    // 只保留 authorization 和 x-api-key 头
-    if (req.headers.authorization) {
-      headers.authorization = req.headers.authorization;
-    }
+    // 批量处理需要保留的头部
+    const headers = {};
+    allowedHeaders.forEach(headerKey => {
+      if (req.headers[headerKey]) {
+        headers[headerKey] = req.headers[headerKey];
+      }
+    });
     
-    if (req.headers['x-api-key']) {
-      headers['x-api-key'] = req.headers['x-api-key'];
+    // 设置默认值（如果请求中没有这些头部）
+    if (!headers['content-type']) {
+      headers['content-type'] = 'application/json';
     }
-
-    if (req.headers['anthropic-version']) {
-      headers['anthropic-version'] = req.headers['anthropic-version'];
+    if (!headers['accept']) {
+      headers['accept'] = '*/*';
     }
     
     const requestOptions = {
