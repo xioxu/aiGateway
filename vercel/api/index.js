@@ -55,6 +55,9 @@ app.all('/v1/:model/*', (req, res) => {
       requestOptions.body = JSON.stringify(req.body);
     }
 
+    // 打印完整的请求URL
+    console.log('Requesting URL:', backendUrl);
+    
     // 创建请求并直接 pipe
     const backendRequest = request(requestOptions);
 
